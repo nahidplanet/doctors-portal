@@ -8,7 +8,7 @@ const Banner = () => {
       <div id='banner-content'  className="hero md:min-h-screen" >
         <div className="hero-content flex-col lg:flex-row-reverse">
           <div className='md:w-6/12 flex justify-center items-center'>
-            <img src={chair} alt="chair" className="max-w-sm rounded-lg shadow-2xl" />
+            <img  src={chair} alt="chair" className=" rounded-lg shadow-2xl" />
           </div>
           <div className='px-8 md:w-6/12'>
             <h1 className="text-5xl font-bold text-white">Box Office News!</h1>
