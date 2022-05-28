@@ -9,7 +9,7 @@ import Testimonial from '../Testimonial/Testimonial';
 
 const Home = () => {
   return (
-    <div>
+    <div className='max-w-full'>
       <Banner></Banner>
       <Carousel></Carousel>
       <Service ></Service>

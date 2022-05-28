@@ -4,8 +4,8 @@ const Footer = () => {
   const getYear = new Date();
   const year = getYear.getFullYear();
   return (
-    <div className='md:mt-5 ' style={{ background: `url(${footerBgImg})`, backgroundPosition: "center center", backgroundSize: "cover", backgroundRepeat: "no-repeat" }}>
-      <div className='w-full'>
+    <div className='sm:mt-5 lg:mt-5 ' style={{ background: `url(${footerBgImg})`, backgroundPosition: "center center", backgroundSize: "cover", backgroundRepeat: "no-repeat" }}>
+      <div className=''>
         <div className='md:flex md:justify-between grid grid-cols-2 px-10 py-10 gap-6'>
           <div className="service">
             <h1 className='text-lg uppercase font-bold text-gray-600'>Service</h1>
