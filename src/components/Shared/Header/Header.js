@@ -1,15 +1,26 @@
 import React from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link } from 'react-router-dom';
+import auth from '../../../firebase/firebase.init';
 import CustomLink from '../CustomLink/CustomLink';
+import {  signOut } from "firebase/auth";
 
 
 const Header = () => {
+  const [user] =useAuthState(auth);
+ 
   const navitemsis = <>
     <li><CustomLink to={'/home'}>Home</CustomLink></li>
     <li><CustomLink to={'/about'}>About</CustomLink></li>
     <li><CustomLink to={'/appointment'}>Appointment</CustomLink></li>
     <li><CustomLink to={'/reviews'}>Reviews</CustomLink></li>
     <li><CustomLink to={'/contacts'}>Contact Us</CustomLink></li>
+    {
+      user?
+      <li onClick={()=>signOut(auth)}> <a > Log Out</a></li>
+      :
+      <li><CustomLink to={'/login'}>Login</CustomLink></li>
+    }
   </>
   return (
     <div className="navbar ">
