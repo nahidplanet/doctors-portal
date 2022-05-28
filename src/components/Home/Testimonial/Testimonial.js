@@ -4,6 +4,7 @@ import client2 from '../../../assets/images/people2.png'
 import client3 from '../../../assets/images/people3.png'
 import quote from '../../../assets/icons/quote.svg'
 import SingleTestimonial from '../SingleTestimonial/SingleTestimonial';
+import SectionTitle from '../../Shared/SectionTitle';
 
 const Testimonial = () => {
   const items = [
@@ -33,10 +34,10 @@ const Testimonial = () => {
     <div className='mt-10'>
       <div className="Testimonial-top flex justify-between md:px-10 px-8">
         <div className='left'>
-          <div className='text-left mb-10'>
-            <h1 className='text-[#19D3AE] font-bold'>Testimonial</h1>
-            <h1 className='text-2xl text-textMain'>What Our Patients Says</h1>
-          </div>
+          <SectionTitle 
+          title ="Testimonial"
+          subtitle="What Our Patients Says"
+          />
         </div>
         <div className='right'>
           <img className='w-32 lg:w-40 mb-10' src={quote} alt="" />

@@ -1,13 +1,16 @@
 import React from 'react';
 import appointment from '../../../assets/images/appointment.png'
+import SectionTitle from '../../Shared/SectionTitle'
 const InputArea = () => {
   return (
     <div className='mt-32'>
       <div className='' style={{ background: `url(${appointment})`, backgroundPosition: "center center", backgroundSize: "cover", backgroundRepeat: "no-repeat" }}>
         <div className='md:p-16 px-8 pt-10'>
           <div className='text-center mb-10'>
-            <h1 className='text-[#19D3AE] font-bold'>Testimonial</h1>
-            <h1 className='text-2xl text-white'>What Our Patients Says</h1>
+            <SectionTitle
+            title='Contact Us'
+            subtitle='Stay connected with us'
+            />
           </div>
           <div className='grid md:grid-cols-3 gap-8'>
             <div></div>
