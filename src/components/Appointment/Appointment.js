@@ -11,7 +11,7 @@ const Appointment = () => {
       <ApoointmentBanner date={date} setDate={setDate}></ApoointmentBanner>
       <div className='px-10'>
         <AvilableService date={date}></AvilableService>
-        <AvileableSlot></AvileableSlot>
+        <AvileableSlot date={date}></AvileableSlot>
       </div>
     </div>
   );

@@ -1,15 +1,16 @@
-import React from 'react';
-import MainButton from '../Shared/MainButton'
-const SingleSlot = ({slot}) => {
-const {name,slots} = slot
+
+const SingleSlot = ({ slot,openModal }) => {
+  const { name, slots } = slot;
   return (
-    <div className='border rounded-xl shadow-md px-5 pt-10 pb-5'>
-      <div className='text-center mb-3'>
+    <div className="card border-t flex justify-center items-center shadow-xl">
+      <div className="card-body text-center">
         <h1 className='text-[#19D3AE] text-xl font-semibold'>{name}</h1>
         <h3>{slots[1]}</h3>
-      </div>
-      <div className='text-center mt-5'>
-        <MainButton> book </MainButton>
+        <p>{slots.length < 1 ? "no space avilable" : `${slots.length} space avilable`}</p>
+        <label htmlFor="booking-modal"
+        onClick={()=>openModal(slot)}
+        disabled={slots.length < 1}
+         className="btn modal-button border-0 text-white bg-gradient-to-r from-[#18D3AF] to-[#0FCFEB]">book Appointment</label>
       </div>
     </div>
   );

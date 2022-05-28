@@ -13,7 +13,7 @@ const Carousel = () => {
   return (
     <div className="carousel carousel-center full md:p-4 px-8 mt-10 gap-5  rounded-box grid md:grid-cols-2 lg:grid-cols-3">
       <SingleCarousel desc={desc1} title='Opening Hours' img={clock} bC={gradient} ></SingleCarousel>
-      <SingleCarousel desc={desc2} title='Visit our location' img={marker} bC={'#1E1E1E'} ></SingleCarousel>
+      <SingleCarousel desc={desc2} title='Visit our location' img={marker} bC={'bg-[#1E1E1E]'} ></SingleCarousel>
       <SingleCarousel desc={desc3} title='Contact us now' img={phone} bC={gradient} ></SingleCarousel>
     </div>
   );
