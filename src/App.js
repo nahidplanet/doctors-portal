@@ -1,6 +1,7 @@
 
 import './App.css';
 import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Shared/Header/Header';
 import { Route, Routes } from 'react-router-dom';
 
@@ -13,6 +14,7 @@ import Footer from './components/Shared/Footer/Footer';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import RequireAuth from './components/Shared/RequireAuth/RequireAuth';
+import ForgetPassword from './components/ForgetPassword/ForgetPassword';
 
 function App() {
   return (
@@ -27,10 +29,11 @@ function App() {
         <Route path='/contacts' element={<ContactUs></ContactUs>}></Route>
         <Route path='/login' element={<Login></Login>}></Route>
         <Route path='/register' element={<Register></Register>}></Route>
-        <Route path='/forget' element={<ContactUs></ContactUs>}></Route>
+        <Route path='/forget' element={<ForgetPassword/>}></Route>
       </Routes>
       <Footer></Footer>
       <ToastContainer></ToastContainer>
+      <ToastContainer/>
     </>
   );
 }

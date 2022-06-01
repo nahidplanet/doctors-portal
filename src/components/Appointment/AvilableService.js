@@ -3,7 +3,6 @@ import React from 'react';
 import AvileableCategory from './AvileableCategory';
 
 const AvilableService = ({date}) => {
-  console.log(date);
   const categoryName = [
     { _id: 1, name: 'Teeth Orthodontics' },
     { _id: 2, name: 'Cosmetic Dentistry' },

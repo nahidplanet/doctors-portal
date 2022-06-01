@@ -1,125 +1,147 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import SocialSingin from '../Shared/SocialSingin/SocialSingin';
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useCreateUserWithEmailAndPassword, useSendEmailVerification, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
 import auth from '../../firebase/firebase.init';
+import { useForm } from 'react-hook-form';
+import Loading from '../Shared/Loading';
+
+
+
 const Register = () => {
-  const [agree,setAgree] = useState(false); 
-  const navigate =  useNavigate();
-  const [
-    createUserWithEmailAndPassword,
-    user,
-    loading,
-    error,
-  ] = useCreateUserWithEmailAndPassword(auth);
-  const handleRegistration = (e) =>{
-    e.preventDefault();
-    const name = e.target.name.value;
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-    console.log(name,email,password);
-    createUserWithEmailAndPassword(email,password);
+  const [passerror, setpassError] = useState(null);
+  let showError;
+  const navigate = useNavigate();
+  let location = useLocation();
+
+  const [signInWithGoogle, userGoogle, loadingGoogle, errorGoogle] = useSignInWithGoogle(auth);
+  const [createUserWithEmailAndPassword, user, loading, error,] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
+  const [sendEmailVerification] = useSendEmailVerification(auth);
+
+  const [updateProfile, updating, errorPro] = useUpdateProfile(auth)
+
+
+  // let passwordMatching;
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const onSubmit = async data => {
+
+    if (data.password === data.confirmPassword) {
+      await createUserWithEmailAndPassword(data.email, data.password);
+      await updateProfile({ displayName: data.name });
+
+    } else {
+      setpassError("Confirm password do not match");
+    }
   }
-  if (user) {
-    navigate("/home")
+
+  let from = location.state?.from?.pathname || "/";
+
+  useEffect(() => {
+    if (userGoogle || user) {
+      navigate(from, { replace: true });
+    }
+  }, [userGoogle, user, from, navigate]);
+
+  if (loadingGoogle || loading || updating) {
+    return <Loading></Loading>
   }
+
+
+  if (errorGoogle || error || errorPro) {
+    showError = <small className='text-red-600'>{error?.message || errorGoogle?.message || errorPro?.message}</small>
+  }
+
 
   return (
     <main>
-      <section className=" w-full mt-5 h-full">
-        <div className="container mx-auto px-4 h-full">
-          <div className="flex content-center items-center justify-center h-full">
-            <div className="w-full lg:w-4/12 px-4">
-              <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg  border">
-                {
-                  <SocialSingin></SocialSingin>
-                }
-                <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-                  <div className="text-gray-500 text-center mb-3 font-bold">
-                    <small>Or sign in with credentials</small>
-                  </div>
-                  <form onSubmit={handleRegistration}>
-                    <div className="relative w-full mb-3">
-                      <label
-                        className="block uppercase text-gray-700 text-xs font-bold mb-2"
-                        htmlFor="grid-password"
-                      >
-                        Name
-                      </label>
-                      <input
-                        type="text"
-                        name='name'
-                        required
-                        className=" shadow-sm rounded-md px-3 py-3 border w-full"
-                        placeholder="Full Name"
-                      />
-                    </div>
-                    <div className="relative w-full mb-3">
-                      <label
-                        className="block uppercase text-gray-700 text-xs font-bold mb-2"
-                        htmlFor="grid-password"
-                      >
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        name='email'
-                        required
-                        className=" shadow-sm rounded-md px-3 py-3 border w-full"
-                        placeholder="Email"
-                      />
-                    </div>
+      <section className="">
+        <h1 className='text-center capitalize text-3xl font-bold'>Registration</h1>
+        <div className="row flex justify-center items-center ">
+          <div className="card w-96 mx-auto bg-base-100 shadow-md ">
+            <div className="card-body">
+              <form onSubmit={handleSubmit(onSubmit)}>
 
-                    <div className="relative w-full mb-3">
-                      <label
-                        className="block uppercase text-gray-700 text-xs font-bold mb-2"
-                        htmlFor="grid-password"
-                      >
-                        Password
-                      </label>
-                      <input
-                        name='password'
-                        required
-                        type="password"
-                        className="shadow-sm rounded-md px-3 py-3 border w-full"
-                        placeholder="Password"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="inline-flex items-center cursor-pointer">
-                        <input
-                        
-                          id="customCheckLogin"
-                          type="checkbox"
-                          className="form-checkbox border-0 rounded text-gray-800 ml-1 w-5 h-5"
-                        />
-                        <span className="ml-2 text-sm font-semibold text-gray-700">
-                          Agree with doctor portal?
-                        </span>
-                      </label>
-                    </div>
-
-                    <div className="flex flex-wrap mt-6">
-                      <div className="w-1/2"><small>Already Account? </small>
-                      </div>
-                      <div className="w-1/2 text-right">
-                          <Link to={'/login'}> <small className='text-primary'>Sing in</small> </Link>
-                      </div>
-                    </div>
-
-
-                    <div className="text-center mt-6">
-                      <input  className="shadow-sm rounded-md px-3 py-3 border w-full bg-primary text-white font-bold cursor-pointer" type="submit" value="Register" />
-                    </div>
-                  </form>
+                <div className="form-control w-full  ">
+                  <label className="label">
+                    <span className="label-text">Name</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Your Name"
+                    className="input input-bordered w-full  "
+                    {...register("name", { required: true })} />
+                  <label className="label">
+                    {errors.name?.type === 'required' && <span className="label-text-alt text-red-600">Name is required</span>}
+                  </label>
                 </div>
-              </div>
-            </div>
+
+                <div className="form-control w-full  ">
+                  <label className="label">
+                    <span className="label-text">Email</span>
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="Your Email"
+                    className="input input-bordered w-full  "
+                    {...register("email", { required: true, min: 4, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/i })} />
+                  <label className="label">
+                    {errors.email?.type === 'required' && <span className="label-text-alt text-red-600">Email is required</span>}
+                    {errors.email?.type === 'pattern' && <span className="label-text-alt text-red-600">Provide valid email</span>}
+                  </label>
+                </div>
+
+                <div className="form-control w-full  ">
+                  <label className="label">
+                    <span className="label-text">Password</span>
+                  </label>
+                  <input
+                    type="password"
+                    placeholder="Your Password"
+                    className="input input-bordered w-full  "
+                    {...register("password", { required: true, pattern: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i })} />
+                  <label className="label">
+                    {errors.password?.type === 'required' && <span className="label-text-alt text-red-600">Password is Required</span>}
+                    {errors.password?.type === 'pattern' && <span className="label-text-alt text-red-600">must include lower, upper, number, and special chars</span>}
+
+                  </label>
+                </div>
+
+
+                <div className="form-control w-full  ">
+                  <label className="label">
+                    <span className="label-text">Confirm Password</span>
+                  </label>
+                  <input
+                    type="password"
+                    placeholder="Confirm Password"
+                    className="input input-bordered w-full  "
+                    {...register("confirmPassword", { required: true, pattern: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i })} />
+                  <label className="label">
+                    {errors.confirmPassword?.type === 'required' && <span className="label-text-alt text-red-600">Confirm confirmPassword is Required</span>}
+                    {errors.confirmPassword?.type === 'pattern' && <span className="label-text-alt text-red-600">must include lower, upper, number, and special chars</span>}
+                    {<span className="label-text-alt text-red-600 capitalize">{passerror}</span>}
+                  </label>
+                </div>
+                <span><small>Already have an Account?<Link className='text-[#45C991]' to={"/login"}>please Signin</Link></small></span> <br />
+                {showError && showError}
+                <div className='mt-2'>
+                  <input className='btn w-full text-white' value={"Registration"} type="submit" />
+                </div>
+              </form>
+
+              <div className="divider">OR</div>
+              <button type='button' className='btn w-full text-white'
+                onClick={async () => {
+                  await signInWithGoogle();
+                  await sendEmailVerification();
+                }
+                }>With Google</button>
           </div>
         </div>
-      </section>
-    </main>
+      </div>
+
+
+    </section>
+    </main >
   );
 };
 

@@ -5,7 +5,7 @@ const SingleSlot = ({ slot,openModal }) => {
     <div className="card border-t flex justify-center items-center shadow-xl">
       <div className="card-body text-center">
         <h1 className='text-[#19D3AE] text-xl font-semibold'>{name}</h1>
-        <h3>{slots[1]}</h3>
+        <h3>{slots[0]}</h3>
         <p>{slots.length < 1 ? "no space avilable" : `${slots.length} space avilable`}</p>
         <label htmlFor="booking-modal"
         onClick={()=>openModal(slot)}

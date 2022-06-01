@@ -2,10 +2,13 @@ import { format } from 'date-fns';
 import React from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import auth from '../../firebase/firebase.init'
 
 const BookingModal = ({ slotDetails, dateIs }) => {
   const { name, slots } = slotDetails;
-  const date = format(dateIs, 'pp');
+  const date = format(dateIs, 'PP');
+  const [user, loading, error] = useAuthState(auth);
 
   const handleBooking = (e) => {
     e.preventDefault();
@@ -16,25 +19,27 @@ const BookingModal = ({ slotDetails, dateIs }) => {
     const email = e.target.email.value;
     const phone = e.target.phone.value;
 
-    const bookingInfo = {serviceName:serviceName, date:date, slot:slot, userName:userName, email:email, phone:phone}
-    console.log(bookingInfo); 
+    const bookingInfo = { serviceName: serviceName, date: date, slot: slot, userName: userName, email: email, phone: phone }
+
 
     const url = `http://localhost:5000/booking`;
-    fetch(url,{
-      method:"POST",
-      headers:{
-        "content-type":"application/json"
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
       },
-      body:JSON.stringify(bookingInfo)
+      body: JSON.stringify(bookingInfo)
     })
-    .then(res=>res.json())
-    .then(data=>{
-      if (data.acknowledged === true) {
-        toast("Booking Successfull");
-      }
-    })
+      .then(res => res.json())
+      .then(data => {
+        if (data?.result?.acknowledged === true) {
+          return toast("Booking Successfull");
+        }
+        toast.error(`you are already booking This ${serviceName} ${slot}`);
+        console.log(data);
+      })
+    e.target.reset();
 
-    e.target.reset()
   }
 
   return (
@@ -51,10 +56,10 @@ const BookingModal = ({ slotDetails, dateIs }) => {
             <input required type="text" name='date' value={date} readOnly className="input mt-2 input-bordered w-full " />
 
             <select name="slot" className="select select-bordered w-full mt-2">
-              {slots.map(item => <option value={item}>{item}</option>)}
+              {slots.map((item, index) => <option key={index} value={item}>{item}</option>)}
             </select>
-            <input required type="text" name='userName' placeholder="Your Name" className="input mt-2 input-bordered w-full " />
-            <input required type="email" name='email' placeholder="Email" className="input mt-2 input-bordered w-full " />
+            <input required readOnly value={user?.displayName} type="text" name='userName' placeholder="Your Name" className="input mt-2 input-bordered w-full " />
+            <input required readOnly value={user?.email} type="email" name='email' placeholder="Email" className="input mt-2 input-bordered w-full " />
             <input required type="number" name='phone' placeholder="Phone Number" className="input mt-2 input-bordered w-full " />
 
 

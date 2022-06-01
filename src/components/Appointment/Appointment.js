@@ -6,6 +6,7 @@ import AvileableSlot from './AvileableSlot';
 
 const Appointment = () => {
   const [date, setDate] = useState(new Date());
+  
   return (
     <div>
       <ApoointmentBanner date={date} setDate={setDate}></ApoointmentBanner>

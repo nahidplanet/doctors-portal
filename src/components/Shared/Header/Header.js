@@ -17,7 +17,7 @@ const Header = () => {
     <li><CustomLink to={'/contacts'}>Contact Us</CustomLink></li>
     {
       user?
-      <li onClick={()=>signOut(auth)}> <a > Log Out</a></li>
+      <li onClick={()=>signOut(auth)}> <a > {user.displayName} Log Out</a></li>
       :
       <li><CustomLink to={'/login'}>Login</CustomLink></li>
     }
