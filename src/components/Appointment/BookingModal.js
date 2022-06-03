@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../firebase/firebase.init'
 
-const BookingModal = ({ slotDetails, dateIs }) => {
+const BookingModal = ({ slotDetails, dateIs, refetch }) => {
   const { name, slots } = slotDetails;
   const date = format(dateIs, 'PP');
   const [user, loading, error] = useAuthState(auth);
@@ -33,11 +33,14 @@ const BookingModal = ({ slotDetails, dateIs }) => {
       .then(res => res.json())
       .then(data => {
         if (data?.result?.acknowledged === true) {
+          refetch();
           return toast("Booking Successfull");
         }
         toast.error(`you are already booking This ${serviceName} ${slot}`);
-        console.log(data);
+
+
       })
+    
     e.target.reset();
 
   }

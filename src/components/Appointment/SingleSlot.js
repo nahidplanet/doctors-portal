@@ -1,6 +1,11 @@
+ import React from "react";
+
+
 
 const SingleSlot = ({ slot,openModal }) => {
   const { name, slots } = slot;
+
+    
   return (
     <div className="card border-t flex justify-center items-center shadow-xl">
       <div className="card-body text-center">

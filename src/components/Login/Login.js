@@ -3,6 +3,7 @@ import { useSendEmailVerification, useSignInWithEmailAndPassword, useSignInWithG
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase/firebase.init';
+import useToken from '../../hooks/useToken';
 import Loading from '../Shared/Loading';
 
 const Login = () => {
@@ -21,11 +22,16 @@ const Login = () => {
   };
   let from = location.state?.from?.pathname || "/";
 
-  useEffect(() => {
-    if (user || userGoogle) {
-      navigate(from, { replace: true });
-    }
-  }, [userGoogle, user, from, navigate]);
+
+
+  const [token] = useToken(user || userGoogle);
+
+
+useEffect(()=>{
+  if (token) {
+    navigate(from, { replace: true });
+  }
+},[token])
 
 
   if (loading || loadingGoogle || emailVeryfysending) {

@@ -4,6 +4,7 @@ import { useCreateUserWithEmailAndPassword, useSendEmailVerification, useSignInW
 import auth from '../../firebase/firebase.init';
 import { useForm } from 'react-hook-form';
 import Loading from '../Shared/Loading';
+import useToken from '../../hooks/useToken';
 
 
 
@@ -35,11 +36,14 @@ const Register = () => {
 
   let from = location.state?.from?.pathname || "/";
 
-  useEffect(() => {
-    if (userGoogle || user) {
-      navigate(from, { replace: true });
-    }
-  }, [userGoogle, user, from, navigate]);
+  const [token] = useToken(user || userGoogle);
+
+
+useEffect(()=>{
+  if (token) {
+    navigate(from, { replace: true });
+  }
+},[token])
 
   if (loadingGoogle || loading || updating) {
     return <Loading></Loading>
@@ -135,12 +139,12 @@ const Register = () => {
                   await sendEmailVerification();
                 }
                 }>With Google</button>
+            </div>
           </div>
         </div>
-      </div>
 
 
-    </section>
+      </section>
     </main >
   );
 };
