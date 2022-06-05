@@ -19,6 +19,8 @@ const Dashboard = () => {
             {/* <!-- Sidebar content here -->  */}
             <li className='text-purple-600 font-bold text-sm'><Link to={"/dashboard/myappointment"}>My Appointment</Link></li>
             <li className='text-purple-600 font-bold text-sm'><Link to={"/dashboard/myreview"}>My Review</Link></li>
+            <li className='text-purple-600 font-bold text-sm'><Link to={"/dashboard/history"}>History</Link></li>
+            <li className='text-purple-600 font-bold text-sm'><Link to={"/dashboard/users"}>Users</Link></li>
           </ul>
 
         </div>

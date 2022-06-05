@@ -18,6 +18,8 @@ import ForgetPassword from './components/ForgetPassword/ForgetPassword';
 import Dashboard from './components/Dashboard/Dashboard';
 import MyAppointment from './components/Dashboard/MyAppointment';
 import MyReview from './components/Dashboard/MyReview';
+import History from './components/Dashboard/History';
+import Users from './components/Dashboard/Users';
 
 function App() {
   return (
@@ -36,6 +38,8 @@ function App() {
         <Route path='/dashboard' element={<RequireAuth><Dashboard></Dashboard></RequireAuth>}>
           <Route index path="myappointment" element={<MyAppointment></MyAppointment>}></Route>
           <Route index path="myreview" element={<MyReview></MyReview>}></Route>
+          <Route index path="history" element={<History></History>}></Route>
+          <Route index path="users" element={<Users></Users>}></Route>
         </Route>
       </Routes>
       <Footer></Footer>

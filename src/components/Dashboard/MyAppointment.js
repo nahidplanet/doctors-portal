@@ -1,49 +1,59 @@
-
-import axios from 'axios';
-import React from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import auth from '../../firebase/firebase.init';
-import Loading from '../Shared/Loading';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import auth from "../../firebase/firebase.init"
+
 
 const MyAppointment = () => {
   const [user] = useAuthState(auth);
-  const patient = user?.email;
-  const url = `http://localhost:5000/myappointment?patient=${patient}`
+  const [getAppointment, setAppointment] = useState([]);
 
 
-  const { isLoading, data } = useQuery("myAppointment", () => {
-    return axios.post(url);
-  })
-  const myAppointmentDetails = data?.data;
+
+  useEffect(() => {
+    const email = user?.email;
+    const url = `http://localhost:5000/myappointment?email=${email}`;
+    fetch(url, {
+      method: "GET",
+      headers: {
+        'athorizetion': `bearer ${localStorage.getItem('accessToken')}`
+      }
+    })
+      .then(res => res.json())
+      .then(data => setAppointment(data))
+  }, [user]);
+  console.log(getAppointment);
 
   return (
     <div>
-      <h1>Your Appointment </h1>
-      <div className="overflow-x-auto">
-        <table className="table w-full">
-          {/* <!-- head --> */}
-          <thead>
-            <tr>
-              <th></th>
-              <th>name</th>
-              <th>Service</th>
-              <th>Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              myAppointmentDetails?.map((a,index)=>  <tr key={a._id}>
-                <th>{index + 1}</th>
-                <td>{a.userName}</td>
-                <td>{a.serviceName}</td>
-                <td>{a.slot}</td>
-              </tr>)
-            }
-            
-            
-          </tbody>
-        </table>
+      <h1 className='text-2xl mb-4 text-center'>My Appointment </h1>
+      <div>
+        <div className="overflow-x-auto">
+          <table className="table w-full">
+
+            <thead>
+              <tr>
+                <th></th>
+                <th>Service</th>
+                <th>Email</th>
+                <th>Time Color</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                getAppointment.map((appointment,index)=><tr key={appointment._id}>
+                  <th>{index+1}</th>
+                  <td>{appointment.serviceName}</td>
+                  <td>{appointment.email}</td>
+                  <td>{appointment.slot}</td>
+                </tr>
+                )
+              }
+
+
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

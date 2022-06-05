@@ -20,7 +20,10 @@ const Header = () => {
         <>
           <li><CustomLink to={'/dashboard'}>Dashboard</CustomLink></li>
 
-          <li onClick={() => signOut(auth)}> <a className=''> <small>{user.displayName}</small> Logout</a></li>
+          <li onClick={() => {
+            signOut(auth)
+            localStorage.removeItem("accessToken");
+          }}> <a className=''> <small>{user.displayName}</small> Logout</a></li>
         </>
         :
         <li><CustomLink to={'/login'}>Login</CustomLink></li>
